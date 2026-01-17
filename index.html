@@ -7,19 +7,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     :root {
-      --bg:        #0d1117;
-      --surface:    #161b22;
-      --surface2:   #21262d;
-      --surface3:   #30363d;
-      --text:       #c9d1d9;
-      --text-dim:   #8b949e;
-      --accent:     #58a6ff;
-      --accent-dim: #388bfd;
-      --border:     #30363d;
-      --glow:       rgba(88, 166, 255, 0.22);
-      --tab-active: #21262d;
-      --error:      #ff6b6b;
-      --warning:    #ffca3a;
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --text: #c9d1d9;
+      --text-dim: #8b949e;
+      --accent: #58a6ff;
+      --border: #30363d;
+      --glow: rgba(88,166,255,0.22);
+      --error: #ff6b6b;
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -40,7 +36,6 @@
       align-items: center;
       padding: 8px 14px;
       gap: 6px;
-      flex-shrink: 0;
       overflow-x: auto;
     }
 
@@ -56,57 +51,25 @@
       color: var(--text-dim);
       font-size: 0.93rem;
       cursor: pointer;
-      transition: all 0.18s;
       min-width: 170px;
       max-width: 300px;
       position: relative;
     }
 
-    .tab:hover { background:#1e252d; color:var(--text); }
     .tab.active {
-      background: var(--tab-active);
+      background: #21262d;
       color: var(--text);
-      border-color: var(--accent-dim);
-      box-shadow: 0 2px 14px rgba(0,0,0,0.32);
-    }
-    .tab.active::after {
-      content: '';
-      position: absolute;
-      bottom: -1px; left:0; right:0; height:3.5px;
-      background: var(--accent);
-      border-radius: 4px 4px 0 0;
+      border-color: var(--accent);
     }
 
     .tab-favicon {
       width: 18px;
       height: 18px;
       object-fit: contain;
-      flex-shrink: 0;
       border-radius: 4px;
-      background: #111;
     }
 
-    .tab .close {
-      opacity: 0.65;
-      font-size: 0.95rem;
-      cursor: pointer;
-      padding: 3px 7px;
-      border-radius: 50%;
-    }
-    .tab .close:hover { opacity:1; background:rgba(255,90,90,0.35); color:#ffaaaa; }
-
-    .new-tab-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-dim);
-      font-size: 1.45rem;
-      cursor: pointer;
-      padding: 9px 13px;
-      border-radius: 7px;
-    }
-    .new-tab-btn:hover { color: var(--accent); background: rgba(88,166,255,0.13); }
-
-    .main-content { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+    .main-content { flex: 1; display: flex; flex-direction: column; }
 
     .browser-bar {
       background: var(--surface);
@@ -125,10 +88,9 @@
       cursor: pointer;
       padding: 7px;
       border-radius: 7px;
-      transition: all 0.2s;
     }
-    .nav-btn:disabled { opacity: 0.38; cursor: not-allowed; }
-    .nav-btn:hover:not(:disabled) { color: var(--accent); background: rgba(88,166,255,0.16); }
+
+    .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     .url-input-wrap {
       flex: 1;
@@ -139,11 +101,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      position: relative;
-    }
-    .url-input-wrap:focus-within {
-      border-color: var(--accent-dim);
-      box-shadow: 0 0 0 3.5px var(--glow);
     }
 
     #urlInput {
@@ -154,81 +111,36 @@
       color: var(--text);
       font-size: 1.03rem;
     }
-    #urlInput::placeholder { color: var(--text-dim); }
-
-    .url-status {
-      font-size: 0.82rem;
-      padding: 3px 9px;
-      border-radius: 12px;
-      white-space: nowrap;
-    }
-    .status-loading { background: #3a5c8c; color: #a5d6ff; }
-    .status-secure  { background: #2a6b3f; color: #9ae6b4; }
-    .status-error   { background: #742a2a; color: #feb2b2; }
 
     #contentArea {
       flex: 1;
-      position: relative;
       overflow: auto;
       background: var(--bg);
+      position: relative;
     }
 
-    .loading, .error-msg {
+    .loading-overlay, .error-overlay {
       position: absolute;
       inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      background: rgba(13,17,23,0.9);
       color: var(--text-dim);
-      font-size: 1.35rem;
-      background: rgba(13,17,23,0.88);
-      z-index: 10;
-    }
-    .error-msg {
-      color: var(--error);
-      text-align: center;
-      padding: 0 2rem;
-    }
-    .error-action {
-      margin-top: 1.8rem;
-      padding: 0.9rem 1.9rem;
-      font-size: 1.1rem;
-      background: var(--accent);
-      color: #0d1117;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      z-index: 999;
     }
 
+    .error-overlay { color: var(--error); }
+
     .home-screen {
-      padding: 90px 24px 50px;
+      padding: 90px 24px;
       text-align: center;
       max-width: 860px;
       margin: 0 auto;
     }
 
-    h1 {
-      font-size: 5.4rem;
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      background: linear-gradient(90deg, #58a6ff, #79c0ff, #a5d6ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 0.7rem;
-      animation: titleFloat 10s ease-in-out infinite;
-    }
-
-    .subtitle { font-size: 1.55rem; color: var(--text-dim); opacity: 0.92; }
-
-    .quick-tiles {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.8rem 2.8rem;
-      margin: 4.5rem 0 3.5rem;
-    }
+    h1 { font-size: 5.4rem; background: linear-gradient(90deg, #58a6ff, #a5d6ff); -webkit-background-clip: text; color: transparent; }
 
     .tile {
       width: 118px;
@@ -241,26 +153,11 @@
       align-items: center;
       justify-content: center;
       gap: 14px;
-      text-decoration: none;
-      color: var(--text);
-      transition: all 0.25s ease;
       cursor: pointer;
+      transition: all 0.25s;
     }
-    .tile:hover {
-      transform: translateY(-9px) scale(1.07);
-      border-color: var(--accent-dim);
-      box-shadow: 0 22px 52px rgba(0,0,0,0.42), 0 0 0 4px var(--glow);
-    }
-    .tile i { font-size: 2.5rem; color: var(--accent); }
-    .tile span { font-size: 0.98rem; font-weight: 500; opacity: 0.96; }
 
-    @keyframes titleFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
-
-    @media (max-width: 680px) {
-      h1 { font-size: 4.2rem; }
-      .quick-tiles { gap: 1.6rem 2.2rem; }
-      .tile { width: 104px; height: 104px; }
-    }
+    .tile:hover { transform: translateY(-9px) scale(1.07); box-shadow: 0 0 0 4px var(--glow); }
   </style>
 </head>
 <body>
@@ -269,24 +166,22 @@
 
 <div class="main-content">
   <div class="browser-bar">
-    <button class="nav-btn" id="backBtn"    title="Back"   disabled><i class="fa-solid fa-arrow-left"></i></button>
-    <button class="nav-btn" id="forwardBtn" title="Forward" disabled><i class="fa-solid fa-arrow-right"></i></button>
-    <button class="nav-btn" id="reloadBtn"  title="Reload"><i class="fa-solid fa-rotate-right"></i></button>
+    <button class="nav-btn" id="backBtn" disabled><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="nav-btn" id="forwardBtn" disabled><i class="fa-solid fa-arrow-right"></i></button>
+    <button class="nav-btn" id="reloadBtn"><i class="fa-solid fa-rotate-right"></i></button>
 
     <div class="url-input-wrap">
       <i class="fa-solid fa-lock" style="color:var(--text-dim);"></i>
-      <input type="text" id="urlInput" placeholder="Search or enter URL   [Ctrl+K]" autofocus/>
-      <span id="urlStatus" class="url-status"></span>
+      <input type="text" id="urlInput" placeholder="Enter URL or search [Ctrl+K]" autofocus/>
     </div>
 
-    <button class="nav-btn" id="homeBtn" title="Home"><i class="fa-solid fa-house"></i></button>
+    <button class="nav-btn" id="homeBtn"><i class="fa-solid fa-house"></i></button>
   </div>
 
   <div id="contentArea"></div>
 </div>
 
 <script>
-// ── Tab & History ───────────────────────────────────────────
 let tabs = [{
   id: 1,
   title: "Nova",
@@ -298,54 +193,32 @@ let tabs = [{
 }];
 let nextTabId = 2;
 
-const tabBar       = document.getElementById("tabBar");
-const contentArea  = document.getElementById("contentArea");
-const urlInput     = document.getElementById("urlInput");
-const urlStatus    = document.getElementById("urlStatus");
-const backBtn      = document.getElementById("backBtn");
-const forwardBtn   = document.getElementById("forwardBtn");
-const reloadBtn    = document.getElementById("reloadBtn");
-const homeBtn      = document.getElementById("homeBtn");
+const tabBar = document.getElementById("tabBar");
+const contentArea = document.getElementById("contentArea");
+const urlInput = document.getElementById("urlInput");
+const backBtn = document.getElementById("backBtn");
+const forwardBtn = document.getElementById("forwardBtn");
+const reloadBtn = document.getElementById("reloadBtn");
+const homeBtn = document.getElementById("homeBtn");
 
 function getActiveTab() { return tabs.find(t => t.active); }
 
-function updateNavButtons() {
-  const tab = getActiveTab();
-  if (!tab) return;
-  backBtn.disabled    = tab.historyIndex <= 0;
-  forwardBtn.disabled = tab.historyIndex >= tab.history.length - 1;
-}
-
-function setUrlStatus(type = '', text = '') {
-  urlStatus.className = 'url-status';
-  urlStatus.textContent = text;
-  if (type === 'loading') urlStatus.classList.add('status-loading');
-  if (type === 'secure')  urlStatus.classList.add('status-secure');
-  if (type === 'error')   urlStatus.classList.add('status-error');
-}
-
 function renderTabs() {
   tabBar.innerHTML = '';
-
   tabs.forEach(tab => {
     const el = document.createElement('div');
     el.className = `tab ${tab.active ? 'active' : ''}`;
     el.innerHTML = `
-      <img class="tab-favicon" src="${tab.favicon}" alt="" 
-           onerror="this.src='https://via.placeholder.com/18/444/222?text=?'">
+      <img class="tab-favicon" src="${tab.favicon}" alt="" onerror="this.src='https://via.placeholder.com/18/444/222?text=?'">
       <span>${tab.title}</span>
       <i class="fa-solid fa-times close"></i>
     `;
-    el.addEventListener('click', e => {
-      if (e.target.classList.contains('close')) return;
-      setActiveTab(tab.id);
-    });
-    el.querySelector('.close').addEventListener('click', () => removeTab(tab.id));
+    el.onclick = () => setActiveTab(tab.id);
+    el.querySelector('.close').onclick = (e) => { e.stopPropagation(); removeTab(tab.id); };
     tabBar.appendChild(el);
   });
 
   const newBtn = document.createElement('button');
-  newBtn.className = 'new-tab-btn';
   newBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
   newBtn.onclick = addNewTab;
   tabBar.appendChild(newBtn);
@@ -354,7 +227,6 @@ function renderTabs() {
 function setActiveTab(id) {
   tabs.forEach(t => t.active = t.id === id);
   renderTabs();
-  updateNavButtons();
   loadCurrentTabContent();
 }
 
@@ -370,7 +242,6 @@ function addNewTab() {
     active: true
   });
   renderTabs();
-  updateNavButtons();
   loadCurrentTabContent();
 }
 
@@ -379,204 +250,77 @@ function removeTab(id) {
   const idx = tabs.findIndex(t => t.id === id);
   const wasActive = tabs[idx].active;
   tabs.splice(idx, 1);
-  if (wasActive) {
-    const newIdx = Math.min(idx, tabs.length - 1);
-    tabs[newIdx].active = true;
-  }
+  if (wasActive) tabs[Math.min(idx, tabs.length-1)].active = true;
   renderTabs();
-  updateNavButtons();
   loadCurrentTabContent();
 }
 
-// ── Proxy Loading ───────────────────────────────────────────
-const PROXY_POOL = [
+const PROXIES = [
   "https://api.allorigins.win/raw?url=",
   "https://corsproxy.io/?",
   "https://api.codetabs.com/v1/proxy?quest=",
-  "https://proxy.x8r.workers.dev/?url=",
-  "https://cors-anywhere-ng.herokuapp.com/"
+  "https://proxy.x8r.workers.dev/?url="
 ];
 
-let currentProxyIndex = 0;
-
-function getNextProxy() {
-  const p = PROXY_POOL[currentProxyIndex];
-  currentProxyIndex = (currentProxyIndex + 1) % PROXY_POOL.length;
-  return p;
-}
-
-async function fetchViaProxy(targetUrl) {
-  let attempts = 0;
-  while (attempts < PROXY_POOL.length) {
-    const prefix = getNextProxy();
+async function fetchViaProxy(url) {
+  for (const p of PROXIES) {
     try {
-      const full = prefix + encodeURIComponent(targetUrl);
-      const res = await fetch(full, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) NovaProxy/1.0' }
-      });
+      const res = await fetch(p + encodeURIComponent(url));
       if (res.ok) return await res.text();
     } catch {}
-    attempts++;
   }
-  throw new Error("All proxies failed");
+  throw new Error("Proxy fetch failed");
 }
 
-function getFaviconUrl(html, pageUrl) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-
-  const candidates = [
-    'link[rel="icon"]',
-    'link[rel="shortcut icon"]',
-    'link[rel="apple-touch-icon"]',
-    'link[rel="apple-touch-icon-precomposed"]'
-  ];
-
-  for (const sel of candidates) {
-    const link = doc.querySelector(sel);
-    if (link?.href) {
-      try { return new URL(link.href, pageUrl).href; } catch {}
-    }
-  }
-
-  try {
-    const domain = new URL(pageUrl).hostname;
-    return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
-  } catch {}
-
-  return "https://via.placeholder.com/32/444/222?text=?";
-}
-
-function createShadowContainer(html, baseUrl) {
-  const wrapper = document.createElement('div');
-  wrapper.style.height = '100%';
-  const shadow = wrapper.attachShadow({ mode: 'open' });
-
-  const style = document.createElement('style');
-  style.textContent = `
-    :host, html, body { margin:0; padding:0; height:100%; background:#0d1117; color:#c9d1d9; font-family:system-ui,sans-serif; }
-    a { color:#58a6ff !important; text-decoration:underline; }
-    button, input[type="button"], input[type="submit"] { cursor:pointer; }
-    *:focus { outline:2px solid #58a6ff; }
-  `;
-  shadow.appendChild(style);
-
-  shadow.innerHTML += html;
-
-  const rewrite = (el, attr) => {
-    el.querySelectorAll(`[${attr}]`).forEach(node => {
-      let v = node.getAttribute(attr);
-      if (!v || v.startsWith('javascript:') || v.startsWith('data:')) return;
-      try {
-        if (v.startsWith('//')) v = 'https:' + v;
-        else if (v.startsWith('/')) v = new URL(v, baseUrl).href;
-        else if (!v.startsWith('http') && !v.startsWith('#')) {
-          v = new URL(v, baseUrl).href;
-        }
-        node.setAttribute(attr, v);
-      } catch {}
-    });
-  };
-
-  rewrite(shadow, 'href');
-  rewrite(shadow, 'src');
-  rewrite(shadow, 'action');
-
-  shadow.querySelectorAll('[style*="url("]').forEach(el => {
-    let style = el.getAttribute('style') || '';
-    style = style.replace(/url\(['"]?([^'")]+)['"]?\)/g, (m, url) => {
-      try {
-        const abs = new URL(url, baseUrl).href;
-        return `url("${abs}")`;
-      } catch { return m; }
-    });
-    el.setAttribute('style', style);
-  });
-
-  shadow.addEventListener('click', e => {
-    const a = e.target.closest('a[href]');
-    if (a && a.href && !a.href.startsWith('#') && !a.hasAttribute('download')) {
-      e.preventDefault();
-      e.stopPropagation();
-      loadPage(a.href);
-      return false;
-    }
-  }, { capture: true });
-
-  shadow.addEventListener('submit', e => {
-    const form = e.target;
-    if (!form?.action) return;
-    e.preventDefault();
-    const method = (form.method || 'get').toLowerCase();
-    let target = form.action;
-
-    if (method === 'get') {
-      const data = new URLSearchParams(new FormData(form)).toString();
-      if (data) target += (target.includes('?') ? '&' : '?') + data;
-      loadPage(target);
-    } else {
-      alert("POST forms are not supported in this basic proxy yet.");
-    }
-  }, true);
-
-  return wrapper;
-}
-
-async function loadPage(url, updateHistory = true) {
+async function loadPage(url, addToHistory = true) {
   const tab = getActiveTab();
   if (!tab) return;
 
-  setUrlStatus('loading', 'Loading...');
-  contentArea.innerHTML = `<div class="loading">
-    <i class="fa-solid fa-circle-notch fa-spin" style="font-size:4rem;"></i>
-    <div style="margin-top:1.4rem;">Fetching via proxy...</div>
-  </div>`;
+  contentArea.innerHTML = `
+    <div class="loading-overlay">
+      <i class="fa-solid fa-circle-notch fa-spin fa-4x"></i>
+      <p style="margin-top:1.5rem;">Loading via proxy...</p>
+    </div>
+  `;
 
   try {
-    const html = await fetchViaProxy(url);
-    const container = createShadowContainer(html, url);
+    let html = await fetchViaProxy(url);
+
+    // Very aggressive base URL fix
+    html = html.replace(/(href|src|action)=["']\/([^"']+)["']/g, `$1="$2"`);
+    html = html.replace(/url\(["']?\/([^"')]+)["']?\)/g, `url("/$1")`);
+
+    const container = document.createElement('div');
+    container.innerHTML = html;
 
     contentArea.innerHTML = '';
     contentArea.appendChild(container);
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const newTitle = doc.title.trim() || new URL(url).hostname.replace(/^www\./, '');
-    const faviconUrl = getFaviconUrl(html, url);
-
-    tab.title = newTitle;
-    tab.favicon = faviconUrl;
+    // Try to get title & favicon
+    const title = container.querySelector('title')?.textContent.trim() || new URL(url).hostname;
+    tab.title = title;
     tab.url = url;
+    tab.favicon = `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=32`;
 
-    if (updateHistory) {
+    if (addToHistory) {
       tab.history = tab.history.slice(0, tab.historyIndex + 1);
       tab.history.push(url);
       tab.historyIndex = tab.history.length - 1;
     }
 
     renderTabs();
-    urlInput.value = url;
-    setUrlStatus('secure', 'Secure');
-    updateNavButtons();
 
   } catch (err) {
     contentArea.innerHTML = `
-      <div class="error-msg">
-        <i class="fa-solid fa-shield-halved" style="font-size:5.5rem; margin-bottom:1.5rem; color:#ffca3a;"></i>
-        <div style="font-size:1.6rem; margin-bottom:1rem;">This site blocks proxy loading</div>
-        <div style="font-size:1.15rem; margin:1rem 0; opacity:0.9;">${err.message || 'Connection failed'}</div>
-        <div style="font-size:1rem; opacity:0.8; margin-bottom:2rem;">
-          Many sites block embedding for security reasons.
-        </div>
-        <button class="error-action" id="openRealTab">Open in new browser tab</button>
+      <div class="error-overlay">
+        <i class="fa-solid fa-triangle-exclamation fa-5x" style="color:var(--error)"></i>
+        <h2 style="margin:1.5rem 0">Failed to load</h2>
+        <p>${err.message}</p>
+        <button onclick="window.open('${url}', '_blank')" style="margin-top:2rem; padding:0.8rem 1.8rem; background:var(--accent); color:#000; border:none; border-radius:8px; cursor:pointer;">
+          Open in New Tab
+        </button>
       </div>
     `;
-
-    document.getElementById('openRealTab')?.addEventListener('click', () => {
-      window.open(url, '_blank');
-    });
-
-    setUrlStatus('error', 'Blocked');
   }
 }
 
@@ -584,58 +328,28 @@ function loadHome() {
   const tab = getActiveTab();
   tab.url = "home";
   tab.favicon = "https://via.placeholder.com/32/58a6ff/0d1117?text=N";
-  tab.history = tab.history.slice(0, tab.historyIndex + 1);
   tab.history.push("home");
   tab.historyIndex = tab.history.length - 1;
 
   contentArea.innerHTML = `
     <div class="home-screen">
       <h1>Nova</h1>
-      <div class="subtitle">clean proxy • fast start</div>
-
-      <div class="quick-tiles">
-        <div class="tile" data-url="https://github.com"><i class="fa-brands fa-github"></i><span>GitHub</span></div>
-        <div class="tile" data-url="https://reddit.com"><i class="fa-brands fa-reddit"></i><span>Reddit</span></div>
-        <div class="tile" data-url="https://youtube.com"><i class="fa-brands fa-youtube"></i><span>YouTube</span></div>
-        <div class="tile" data-url="https://x.com"><i class="fa-brands fa-x-twitter"></i><span>X</span></div>
-        <div class="tile" data-url="https://news.ycombinator.com"><i class="fa-solid fa-newspaper"></i><span>HN</span></div>
+      <p class="subtitle">Proxy Browser</p>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:2rem; margin-top:4rem;">
+        <div class="tile" onclick="loadPage('https://github.com')"><i class="fa-brands fa-github fa-3x"></i><span>GitHub</span></div>
+        <div class="tile" onclick="loadPage('https://youtube.com')"><i class="fa-brands fa-youtube fa-3x"></i><span>YouTube</span></div>
       </div>
     </div>
   `;
-
-  contentArea.querySelectorAll('.quick-tiles .tile').forEach(tile => {
-    tile.addEventListener('click', () => {
-      loadPage(tile.dataset.url);
-    });
-  });
-
   urlInput.value = "";
-  setUrlStatus('');
   renderTabs();
-  updateNavButtons();
 }
 
-function loadCurrentTabContent() {
-  const tab = getActiveTab();
-  if (!tab) return;
-
-  urlInput.value = tab.url === "home" ? "" : tab.url;
-
-  if (tab.url === "home") {
-    loadHome();
-  } else {
-    loadPage(tab.url, false);
-  }
-}
-
-// Navigation
 backBtn.onclick = () => {
   const tab = getActiveTab();
   if (tab.historyIndex > 0) {
     tab.historyIndex--;
-    const prev = tab.history[tab.historyIndex];
-    if (prev === "home") loadHome();
-    else loadPage(prev, false);
+    loadPage(tab.history[tab.historyIndex], false);
   }
 };
 
@@ -643,45 +357,29 @@ forwardBtn.onclick = () => {
   const tab = getActiveTab();
   if (tab.historyIndex < tab.history.length - 1) {
     tab.historyIndex++;
-    const next = tab.history[tab.historyIndex];
-    if (next === "home") loadHome();
-    else loadPage(next, false);
+    loadPage(tab.history[tab.historyIndex], false);
   }
 };
 
 reloadBtn.onclick = () => {
   const tab = getActiveTab();
-  if (tab.url === "home") loadHome();
-  else if (tab.url) loadPage(tab.url, false);
+  loadPage(tab.url, false);
 };
 
 homeBtn.onclick = loadHome;
 
-// URL bar
 urlInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     let val = urlInput.value.trim();
-    if (!val) return;
-
-    if (!/^https?:\/\//i.test(val)) {
-      if (val.includes('.') && !val.includes(' ')) val = 'https://' + val;
-      else val = 'https://www.google.com/search?q=' + encodeURIComponent(val);
+    if (val) {
+      if (!val.startsWith('http')) val = 'https://' + val;
+      loadPage(val);
     }
-    loadPage(val);
   }
 });
 
-// Ctrl+K
-document.addEventListener('keydown', e => {
-  if (e.ctrlKey && e.key.toLowerCase() === 'k') {
-    e.preventDefault();
-    urlInput.focus();
-  }
-});
-
-// Init
 renderTabs();
-loadCurrentTabContent();
+loadHome();
 </script>
 </body>
 </html>
